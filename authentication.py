@@ -25,7 +25,16 @@ class File:
         self.default = {
             "AUTH_V": " 1.0"
         }
-        
+    
+    def create_default(self):
+        """
+        write default authentication file.
+        (auth.json)
+        """
+        with open(self.filename, 'w') as file:
+            dump(self.default, file)
+            return True
+    
     def write(self, data):
         """
         write data to the file.
@@ -49,10 +58,11 @@ class File:
         """
         try:
             # check if file exists or not.
-            # if not exists return False.
+            # if not exists create default.
             # else continue.
             if not (exists(self.filename)):
-                return False
+                self.create_default()
+                return self.default
                 
             with open(self.filename, 'r') as file:
                 data = load(file)
@@ -78,8 +88,7 @@ class Auth:
         # existing file data.
         temp = self.file.load()
         if not temp: 
-            print ('invalid file')
-            return
+            temp = self.file.create_default()
         self.data = temp
         
     def get_user(self, username):
