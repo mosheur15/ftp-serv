@@ -88,8 +88,7 @@ class Auth:
         # existing file data.
         temp = self.file.load()
         if not temp: 
-            print ('invalid file')
-            return
+            temp = self.file.create_default()
         self.data = temp
         
     def get_user(self, username):
